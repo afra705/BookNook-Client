@@ -170,64 +170,7 @@ export default function Banner() {
         </Swiper>
       </div>
 
-      {/* Swiper custom styling */}
-      <style jsx global>{`
-        .booknook-swiper .swiper-button-next,
-        .booknook-swiper .swiper-button-prev {
-          width: 42px;
-          height: 42px;
-          border-radius: 50%;
-          background: rgba(255, 253, 248, 0.95);
-          color: #283d32;
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
-          transition: all 0.3s ease;
-        }
-
-        .booknook-swiper .swiper-button-next:hover,
-        .booknook-swiper .swiper-button-prev:hover {
-          background: #c8795b;
-          color: white;
-        }
-
-        .booknook-swiper .swiper-button-next::after,
-        .booknook-swiper .swiper-button-prev::after {
-          font-size: 14px;
-          font-weight: bold;
-        }
-
-        .booknook-swiper .swiper-pagination {
-          bottom: 22px !important;
-          text-align: left;
-          padding-left: 40px;
-        }
-
-        .booknook-swiper .swiper-pagination-bullet {
-          width: 9px;
-          height: 9px;
-          background: #f8f5ed;
-          opacity: 0.5;
-          transition: all 0.3s ease;
-        }
-
-        .booknook-swiper .swiper-pagination-bullet-active {
-          width: 25px;
-          border-radius: 10px;
-          background: #c8795b;
-          opacity: 1;
-        }
-
-        @media (max-width: 767px) {
-          .booknook-swiper .swiper-button-next,
-          .booknook-swiper .swiper-button-prev {
-            display: none;
-          }
-
-          .booknook-swiper .swiper-pagination {
-            bottom: 18px !important;
-            padding-left: 24px;
-          }
-        }
-      `}</style>
+   
     </section>
   );
 }

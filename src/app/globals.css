@@ -123,6 +123,35 @@ body{
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* Swiper Navigation Arrows */
+.booknook-swiper .swiper-button-next,
+.booknook-swiper .swiper-button-prev {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: #fffdf8 !important;
+  color: #283d32 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s ease;
+}
+
+.booknook-swiper .swiper-button-next::after,
+.booknook-swiper .swiper-button-prev::after {
+  font-size: 14px !important;
+  font-weight: bold;
+  color: #283d32 !important;
+}
+
+.booknook-swiper .swiper-button-next:hover,
+.booknook-swiper .swiper-button-prev:hover {
+  background-color: #c8795b !important;
+}
+
+.booknook-swiper .swiper-button-next:hover::after,
+.booknook-swiper .swiper-button-prev:hover::after {
+  color: #fffdf8 !important;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
