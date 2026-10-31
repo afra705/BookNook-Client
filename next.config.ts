@@ -7,16 +7,20 @@ images: {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "covers.openlibrary.org",
+        hostname: "**",
       },
-      {
-        protocol: "https",
-        hostname: "books.google.com",
-      },
-      {
-        protocol: "https",
-        hostname: "www.wenesyzadolik.org.uk",
-      },
+      // {
+      //   protocol: "https",
+      //   hostname: "books.google.com",
+      // },
+      // {
+      //   protocol: "https",
+      //   hostname: "www.wenesyzadolik.org.uk",
+      // },
+      // {
+      //   protocol: "https",
+      //   hostname: "img.magnific.com",
+      // },
     ],
   },
   turbopack: {

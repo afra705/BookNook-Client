@@ -229,7 +229,7 @@ function SignInForm() {
         <p className="mt-7 text-center text-sm text-[#292D2A]">
           Don&apos;t have an account?{" "}
           <Link
-            href="/signup"
+            href="/sign-up"
             className="font-bold text-[#C8795B] hover:underline"
           >
             Register Now

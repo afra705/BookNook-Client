@@ -8,6 +8,7 @@ const db = client.db('booknook-server');
 export const auth = betterAuth({
     emailAndPassword: { 
     enabled: true, 
+    autoSignIn: false,
   }, 
   database: mongodbAdapter(db, {
     client,
