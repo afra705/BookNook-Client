@@ -22,7 +22,7 @@ const BooksPage = async ({ searchParams }: BooksPageProps) => {
     ? params.category[0]
     : params.category;
   const selectedCategory = categoryParam?.trim() || "";
-
+  
   const res = await fetch("http://localhost:5000/books", {
     cache: "no-store",
   });

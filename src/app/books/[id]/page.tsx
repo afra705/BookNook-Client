@@ -1,6 +1,11 @@
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 import Link from "next/link";
 import { ArrowLeft, BookOpen, User, Copy } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import BorrowModal from "@/components/BorrowModal";
 
 interface Person {
   name?: string;
@@ -33,6 +38,19 @@ const getPersonName = (person: string | Person | undefined) => {
 };
 
 const BookDetails = async ({ params }: BookDetailsProps) => {
+   // Get logged-in user session
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+   if (!session) {
+    redirect("/login");
+  }
+
+  const userName = session.user.name;
+  const userEmail = session.user.email;
+
+
   const { id } = await params;
 
   const res = await fetch(`http://localhost:5000/books/${id}`, {
@@ -150,19 +168,23 @@ const BookDetails = async ({ params }: BookDetailsProps) => {
             </div>
 
             {/* Borrow Button */}
-            <div className="mt-auto pt-8">
-              <button
-                type="button"
-                disabled={book.totalCopies <= 0}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#283D32] px-6 py-3.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#879878] hover:shadow-lg disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none sm:w-auto"
-              >
-                <BookOpen size={18} />
-
-                {book.totalCopies > 0
-                  ? "Borrow This Book"
-                  : "Not Available"}
-              </button>
-            </div>
+        <div className="mt-auto pt-8">
+          {book.totalCopies > 0 ? (
+            <BorrowModal
+              userName={userName}
+              userEmail={userEmail}
+              bookTitle={book.title}
+            />
+          ) : (
+       <button
+  disabled
+  className="w-full h-12 rounded-xl bg-gray-200 text-gray-500 font-semibold cursor-not-allowed"
+>
+  <BookOpen className="inline mr-2 h-5 w-5" />
+  Not Available
+</button>
+          )}
+        </div>
           </div>
         </article>
       </div>
