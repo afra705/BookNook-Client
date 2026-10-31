@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 
 import Link from "next/link";
 import { ArrowLeft, BookOpen, User, Copy } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import BorrowModal from "@/components/BorrowModal";
 
 interface Person {
