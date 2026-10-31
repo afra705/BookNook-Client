@@ -53,14 +53,14 @@ const Navbar = () => {
         {/* Login & Register */}
         <div className="hidden items-center gap-3 lg:flex">
           <Link
-            href="/login"
+            href="/sign-in"
             className="rounded-lg px-4 py-2 text-sm font-semibold text-[#283D32] transition hover:bg-[#E6EBDD]"
           >
             Login
           </Link>
 
           <Link
-            href="/register"
+            href="/sign-up"
             className="rounded-lg bg-[#283D32] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#3C5545]"
           >
             Register
