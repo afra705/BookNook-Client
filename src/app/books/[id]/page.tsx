@@ -1,5 +1,6 @@
+
 import Link from "next/link";
-import { ArrowLeft, BookOpen, User } from "lucide-react";
+import { ArrowLeft, BookOpen, User, Copy } from "lucide-react";
 
 interface Person {
   name?: string;
@@ -13,6 +14,7 @@ interface Book {
   category: string;
   image: string;
   description: string;
+  totalCopies: number;
   addedBy?: string | Person;
   createdBy?: string | Person;
   owner?: string | Person;
@@ -24,7 +26,6 @@ interface BookDetailsProps {
   }>;
 }
 
-// The API does not always include the adder, so support the common field names.
 const getPersonName = (person: string | Person | undefined) => {
   if (!person) return undefined;
   if (typeof person === "string") return person;
@@ -33,6 +34,7 @@ const getPersonName = (person: string | Person | undefined) => {
 
 const BookDetails = async ({ params }: BookDetailsProps) => {
   const { id } = await params;
+
   const res = await fetch(`http://localhost:5000/books/${id}`, {
     cache: "no-store",
   });
@@ -61,7 +63,7 @@ const BookDetails = async ({ params }: BookDetailsProps) => {
         </Link>
 
         <article className="mt-6 grid overflow-hidden rounded-3xl border border-[#E7E4D9] bg-[#FFFDF8] shadow-sm lg:grid-cols-[minmax(0,420px)_1fr]">
-          {/* Book cover */}
+          {/* Book Cover */}
           <div className="flex min-h-[360px] items-center justify-center bg-[#f1efea] p-8 lg:min-h-full">
             <img
               src={book.image}
@@ -70,7 +72,7 @@ const BookDetails = async ({ params }: BookDetailsProps) => {
             />
           </div>
 
-          {/* Book details */}
+          {/* Book Details */}
           <div className="flex flex-col p-6 sm:p-9 lg:p-10">
             <span className="w-fit rounded-full bg-[#879878]/15 px-3 py-1 text-xs font-semibold text-[#283D32]">
               {book.category}
@@ -81,37 +83,84 @@ const BookDetails = async ({ params }: BookDetailsProps) => {
             </h1>
 
             <p className="mt-3 text-base text-[#68736A]">
-              By <span className="font-semibold text-[#283D32]">{book.author}</span>
+              By{" "}
+              <span className="font-semibold text-[#283D32]">
+                {book.author}
+              </span>
             </p>
 
+            {/* Description */}
             <div className="mt-8 border-t border-[#E7E4D9] pt-6">
               <h2 className="text-sm font-semibold uppercase tracking-[2px] text-[#C8795B]">
                 About this book
               </h2>
+
               <p className="mt-3 text-sm leading-7 text-[#68736A] sm:text-base sm:leading-8">
                 {book.description}
               </p>
             </div>
 
-            <div className="mt-8 flex items-center gap-3 rounded-2xl border border-[#E7E4D9] bg-[#F8F5ED] p-4">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#283D32] text-[#FFFDF8]">
-                <User size={20} />
-              </div>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[2px] text-[#879878]">
-                  Added by
-                </p>
-                <p className="mt-1 font-semibold text-[#283D32]">{addedBy}</p>
+            {/* Added By & Total Copies */}
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              {/* Added By */}
+
+          <div className="flex items-center gap-3 rounded-2xl border border-[#E7E4D9] bg-[#F8F5ED] p-4">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#283D32] text-[#FFFDF8]">
+              <User size={20} />
+            </div>
+
+            <div>
+              <p className="text-sm text-[#77786F]">Added By</p>
+              <p className="mt-1 font-semibold text-[#283D32]">
+                {addedBy}
+              </p>
+            </div>
+          </div>
+
+
+              {/* Total Copies */}
+              <div className="flex items-center gap-3 rounded-2xl border border-[#E7E4D9] bg-[#F8F5ED] p-4">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#C8795B] text-white">
+                  <Copy size={20} />
+                </div>
+
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#879878]">
+                    Total Copies
+                  </p>
+
+                  <p className="mt-1 font-semibold text-[#283D32]">
+                    {book.totalCopies ?? 0}{" "}
+                    <span className="text-sm font-normal text-[#68736A]">
+                      {book.totalCopies === 1 ? "copy" : "copies"}
+                    </span>
+                  </p>
+
+                  {book.totalCopies > 0 ? (
+                    <p className="mt-1 text-xs font-medium text-green-700">
+                      Available
+                    </p>
+                  ) : (
+                    <p className="mt-1 text-xs font-medium text-red-600">
+                      Not Available
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
 
+            {/* Borrow Button */}
             <div className="mt-auto pt-8">
               <button
                 type="button"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#283D32] px-6 py-3.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#879878] hover:shadow-lg sm:w-auto"
+                disabled={book.totalCopies <= 0}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#283D32] px-6 py-3.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#879878] hover:shadow-lg disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none sm:w-auto"
               >
                 <BookOpen size={18} />
-                Borrow This Book
+
+                {book.totalCopies > 0
+                  ? "Borrow This Book"
+                  : "Not Available"}
               </button>
             </div>
           </div>

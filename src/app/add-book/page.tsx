@@ -78,6 +78,26 @@ const AddBookForm = () => {
                   className="w-full rounded-lg border border-[#DADFD5] bg-white px-4 py-3 text-sm outline-none transition placeholder:text-gray-400 focus:border-[#879878] focus:ring-2 focus:ring-[#879878]/20"
                 />
               </div>
+              {/* Total Copies */}
+            <div>
+              <label
+                htmlFor="totalCopies"
+                className="mb-2 block text-sm font-semibold text-[#283D32]"
+              >
+                Total Copies
+              </label>
+
+              <input
+                id="totalCopies"
+                type="number"
+                name="totalCopies"
+                min="0"
+                step="1"
+                placeholder="Enter total copies"
+                required
+                className="w-full rounded-lg border border-[#DADFD5] bg-white px-4 py-3 text-sm outline-none transition placeholder:text-gray-400 focus:border-[#879878] focus:ring-2 focus:ring-[#879878]/20"
+              />
+            </div>
 
               <div>
                 <label
