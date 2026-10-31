@@ -1,24 +1,55 @@
 'use client'
+import { authClient } from "@/lib/auth-client";
 import React from "react";
+import { toast } from "sonner";
 
 const AddBookForm = () => {
-      const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-    console.log(data);
+    const { data: session, isPending } = authClient.useSession();
 
-       const res = await fetch(`http://localhost:5000/books`,{
-          method: 'POST',
-          headers:{
-            'Content-Type':'application/json'
-          },
-          body:JSON.stringify(data)
-       })
-       const result = await res.json();
-       console.log(result);
-       
-    };
+ const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  e.preventDefault();
+
+  const form = e.currentTarget;
+
+  if (isPending) return;
+
+  if (!session) {
+    toast.error("Please login first!");
+    return;
+  }
+
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData.entries());
+
+  const bookData = {
+    ...data,
+    totalCopies: Number(data.totalCopies),
+    addedBy: {
+      name: session.user.name,
+      email: session.user.email,
+    },
+  };
+
+  const res = await fetch("http://localhost:5000/books", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(bookData),
+  });
+
+  const result = await res.json();
+
+  if (res.ok) {
+    toast.success("Book added successfully!");
+    form.reset();
+  } else {
+    toast.error("Failed to add book!");
+  }
+};
+
+
+
   return (
     <section className="min-h-screen bg-[#F8F5ED] px-4 py-12">
       <div className="mx-auto max-w-2xl">

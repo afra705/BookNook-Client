@@ -43,13 +43,11 @@ export default function BorrowModal({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-   <DialogTrigger >
-  <Button className="w-full h-12 rounded-xl bg-[#283D32] text-white font-semibold shadow-lg hover:bg-[#3b624e] transition-all duration-300">
-    <BookOpen className="mr-2 h-5 w-5" />
-    Borrow This Book
-  </Button>
-</DialogTrigger>
 
+<DialogTrigger className="flex h-12 w-50 items-center justify-center gap-2 rounded-xl bg-[#283D32] text-white font-semibold shadow-lg hover:bg-[#3b624e] transition-all duration-300">
+  <BookOpen className="h-5 w-5 shrink-0" />
+  <span>Borrow This Book</span>
+</DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Borrow This Book</DialogTitle>
