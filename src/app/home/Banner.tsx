@@ -4,6 +4,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BookOpen, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
@@ -42,6 +43,30 @@ const slides = [
   },
 ];
 
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: {
+    opacity: 0,
+    y: 25,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut" as const,
+    },
+  },
+};
+
 export default function Banner() {
   return (
     <section className="bg-[#F8F5ED] px-4 py-5 sm:px-6 lg:px-10">
@@ -55,82 +80,133 @@ export default function Banner() {
             disableOnInteraction: false,
             pauseOnMouseEnter: true,
           }}
-          pagination={{
-            clickable: true,
-          }}
+          pagination={{ clickable: true }}
           navigation
           className="booknook-swiper overflow-hidden rounded-3xl"
         >
           {slides.map((slide, index) => (
             <SwiperSlide key={slide.title}>
               <div className="relative flex min-h-[490px] items-center overflow-hidden bg-[#283D32] px-6 py-12 sm:px-10 md:min-h-[520px] md:px-12 lg:min-h-[560px] lg:px-16">
+
                 {/* Background decorations */}
                 <div className="pointer-events-none absolute -left-20 -top-24 h-72 w-72 rounded-full bg-[#879878]/20 blur-3xl" />
 
                 <div className="pointer-events-none absolute bottom-0 right-0 h-80 w-80 rounded-full bg-[#879878]/15 blur-3xl" />
 
                 {/* Slide text */}
-                <div className="relative z-10 w-full max-w-xl pb-10 md:w-[58%] md:pb-0">
+                <motion.div
+                  key={`text-${slide.title}`}
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="relative z-10 w-full max-w-xl pb-10 md:w-[58%] md:pb-0"
+                >
                   {/* Badge */}
-                  <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#F8F5ED]/20 bg-[#FFFDF8]/10 px-4 py-2 text-xs font-medium tracking-wide text-[#E5E9DC] sm:text-sm">
+                  <motion.div
+                    variants={itemVariants}
+                    className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#F8F5ED]/20 bg-[#FFFDF8]/10 px-4 py-2 text-xs font-medium tracking-wide text-[#E5E9DC] sm:text-sm"
+                  >
                     {index === 0 ? (
                       <Sparkles size={16} />
                     ) : (
                       <BookOpen size={16} />
                     )}
-
                     <span>{slide.badge}</span>
-                  </div>
+                  </motion.div>
 
                   {/* Subtitle */}
-                  <p className="mb-4 text-xs font-semibold tracking-[0.25em] text-[#C8795B] sm:text-sm">
+                  <motion.p
+                    variants={itemVariants}
+                    className="mb-4 text-xs font-semibold tracking-[0.25em] text-[#C8795B] sm:text-sm"
+                  >
                     {slide.subtitle}
-                  </p>
+                  </motion.p>
 
                   {/* Heading */}
-                  <h1 className="max-w-2xl font-serif text-4xl font-bold leading-tight text-[#FFFDF8] sm:text-5xl lg:text-6xl">
+                  <motion.h1
+                    variants={itemVariants}
+                    className="max-w-2xl font-serif text-4xl font-bold leading-tight text-[#FFFDF8] sm:text-5xl lg:text-6xl"
+                  >
                     {slide.title}
-                  </h1>
+                  </motion.h1>
 
                   {/* Description */}
-                  <p className="mt-6 max-w-lg text-sm leading-7 text-[#E1E5D9] sm:text-base sm:leading-8">
+                  <motion.p
+                    variants={itemVariants}
+                    className="mt-6 max-w-lg text-sm leading-7 text-[#E1E5D9] sm:text-base sm:leading-8"
+                  >
                     {slide.description}
-                  </p>
+                  </motion.p>
 
                   {/* Browse Books Button */}
-                  <Link
-                    href="/books"
-                    className="group mt-8 inline-flex items-center gap-3 rounded-full bg-[#C8795B] px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-[#B86B4F] hover:shadow-lg sm:px-7 sm:py-4"
-                  >
-                    Browse Books
-
-                    <ArrowRight
-                      size={18}
-                      className="transition-transform duration-300 group-hover:translate-x-1"
-                    />
-                  </Link>
+                  <motion.div variants={itemVariants}>
+                    <Link
+                      href="/books"
+                      className="group mt-8 inline-flex items-center gap-3 rounded-full bg-[#C8795B] px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-[#B86B4F] hover:shadow-lg sm:px-7 sm:py-4"
+                    >
+                      Browse Books
+                      <ArrowRight
+                        size={18}
+                        className="transition-transform duration-300 group-hover:translate-x-1"
+                      />
+                    </Link>
+                  </motion.div>
 
                   {/* Bottom text */}
-                  <div className="mt-7 flex items-center gap-2 text-xs text-[#D7DFD0] sm:text-sm">
+                  <motion.div
+                    variants={itemVariants}
+                    className="mt-7 flex items-center gap-2 text-xs text-[#D7DFD0] sm:text-sm"
+                  >
                     <BookOpen size={16} className="text-[#C8795B]" />
-
                     <span>Discover. Read. Repeat.</span>
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
 
                 {/* Right-side book image */}
                 <div className="pointer-events-none absolute bottom-0 right-0 top-0 hidden w-[42%] items-center justify-center md:flex">
+
                   {/* Background glow */}
-                  <div className="absolute right-10 h-72 w-72 rounded-full bg-[#DCE3D0]/20 blur-2xl lg:right-16 lg:h-96 lg:w-96" />
+                  <motion.div
+                    animate={{
+                      scale: [1, 1.12, 1],
+                      opacity: [0.5, 0.8, 0.5],
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                    className="absolute right-10 h-72 w-72 rounded-full bg-[#DCE3D0]/20 blur-2xl lg:right-16 lg:h-96 lg:w-96"
+                  />
 
                   {/* Image container */}
-                  <div className="relative h-[300px] w-[250px] overflow-hidden rounded-2xl border-4 border-[#F8F5ED]/20 shadow-2xl lg:h-[370px] lg:w-[300px]">
+                  <motion.div
+                    key={`image-${slide.title}`}
+                    initial={{ opacity: 0, x: 70, scale: 0.9 }}
+                    animate={{
+                      opacity: 1,
+                      x: 0,
+                      scale: 1,
+                      y: [0, -10, 0],
+                    }}
+                    transition={{
+                      opacity: { duration: 0.7 },
+                      x: { duration: 0.7, ease: "easeOut" },
+                      scale: { duration: 0.7 },
+                      y: {
+                        duration: 3.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      },
+                    }}
+                    className="relative h-[300px] w-[250px] overflow-hidden rounded-2xl border-4 border-[#F8F5ED]/20 shadow-2xl lg:h-[370px] lg:w-[300px]"
+                  >
                     <Image
                       src={slide.image}
                       alt={slide.imageAlt}
                       fill
                       sizes="(max-width: 1024px) 250px, 300px"
-                      className="object-cover transition-transform duration-700 hover:scale-105"
+                      className="object-cover"
                       priority={index === 0}
                     />
 
@@ -149,15 +225,31 @@ export default function Banner() {
 
                       <div className="mt-3 h-1 w-12 rounded-full bg-[#C8795B]" />
                     </div>
-                  </div>
+                  </motion.div>
 
                   {/* Decorative accent */}
-                  <div className="absolute bottom-14 right-4 h-16 w-16 rotate-12 rounded-2xl border border-[#F8F5ED]/20 bg-[#C8795B]/80 shadow-lg lg:right-8 lg:h-20 lg:w-20" />
+                  <motion.div
+                    animate={{ rotate: [12, 22, 12], y: [0, -8, 0] }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                    className="absolute bottom-14 right-4 h-16 w-16 rounded-2xl border border-[#F8F5ED]/20 bg-[#C8795B]/80 shadow-lg lg:right-8 lg:h-20 lg:w-20"
+                  />
 
                   {/* Floating book icon */}
-                  <div className="absolute right-8 top-16 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#F8F5ED]/20 bg-[#FFFDF8] text-[#283D32] shadow-xl lg:right-12 lg:top-20">
+                  <motion.div
+                    animate={{ y: [0, -12, 0], rotate: [0, 5, 0] }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                    className="absolute right-8 top-16 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#F8F5ED]/20 bg-[#FFFDF8] text-[#283D32] shadow-xl lg:right-12 lg:top-20"
+                  >
                     <BookOpen size={27} />
-                  </div>
+                  </motion.div>
                 </div>
 
                 {/* Bottom decorative line */}
@@ -169,8 +261,6 @@ export default function Banner() {
           ))}
         </Swiper>
       </div>
-
-   
     </section>
   );
 }

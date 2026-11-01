@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import UpdatePage from "./Update";
+import DeletePage from "./Delete";
 
 interface Book {
   _id: string;
@@ -122,12 +123,7 @@ const MyBooksPage = async () => {
                   <div className="flex gap-2 sm:w-20 sm:shrink-0 sm:flex-col">
                     <UpdatePage book={book} />
 
-                    <button
-                      type="button"
-                      className="flex-1 rounded-md bg-[#C8795B] px-3 py-2 text-xs font-semibold text-white transition hover:bg-[#b9684a]"
-                    >
-                      Delete
-                    </button>
+                    <DeletePage bookId={book._id}/>
                   </div>
                 </div>
               </article>
