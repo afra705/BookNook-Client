@@ -70,6 +70,17 @@ const BookDetails = async ({ params }: BookDetailsProps) => {
 
   const book: Book = await res.json();
 
+  // if user already exists
+  const borrowRes = await fetch(
+  `http://localhost:5000/my-borrows/${(userEmail)}`,
+  { cache: "no-store" }
+  );
+  const borroWBooks = await borrowRes.json();
+  
+const alreadyBorrowed = borroWBooks.some(
+  (borrow: { bookId: string }) => borrow.bookId === book._id
+);
+
   const addedBy =
     getPersonName(book.addedBy) ??
     getPersonName(book.createdBy) ??
@@ -134,26 +145,26 @@ const addedByEmail =
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
               {/* Added By */}
 
-  {/* Added By */}
-<div className="flex items-center gap-3 rounded-2xl border border-[#E7E4D9] bg-[#F8F5ED] p-4">
-  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#283D32] text-[#FFFDF8]">
-    <User size={20} />
-  </div>
+          {/* Added By */}
+        <div className="flex items-center gap-3 rounded-2xl border border-[#E7E4D9] bg-[#F8F5ED] p-4">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#283D32] text-[#FFFDF8]">
+            <User size={20} />
+          </div>
 
-  <div className="min-w-0">
-    <p className="text-sm text-[#77786F]">Added By</p>
+          <div className="min-w-0">
+            <p className="text-sm text-[#77786F]">Added By</p>
 
-    <p className="mt-1 font-semibold text-[#283D32]">
-      {addedBy}
-    </p>
+            <p className="mt-1 font-semibold text-[#283D32]">
+              {addedBy}
+            </p>
 
-    {addedByEmail && (
-      <p className="mt-1 break-all text-xs text-[#68736A]">
-        {addedByEmail}
-      </p>
-    )}
-  </div>
-</div>
+            {addedByEmail && (
+              <p className="mt-1 break-all text-xs text-[#68736A]">
+                {addedByEmail}
+              </p>
+            )}
+          </div>
+        </div>
 
 
               {/* Total Copies */}
@@ -188,26 +199,34 @@ const addedByEmail =
             </div>
 
             {/* Borrow Button */}
-        <div className="mt-auto pt-8">
-          {book.totalCopies > 0 ? (
-            <BorrowModal
+          <div className="mt-auto pt-8">
+            {alreadyBorrowed ? (
+              <button
+                disabled
+              className="flex h-12 w-50 items-center justify-center gap-2 rounded-xl bg-[#969c99] font-semibold text-[#2a4132] transition-colors hover:bg-[#919291]"
+              >
+                <BookOpen className="mr-2 inline h-5 w-5" />
+                Already Borrowed
+              </button>
+            ) : book.totalCopies > 0 ? (
+              <BorrowModal
+                bookId={book._id}
+                userName={userName}
+                userEmail={userEmail}
+                bookTitle={book.title}
+                image={book.image}
+              />
+            ) : (
+              <button
+                disabled
+                className="h-12 w-full cursor-not-allowed rounded-xl bg-gray-200 font-semibold text-gray-500"
+              >
+                <BookOpen className="mr-2 inline h-5 w-5" />
+                Not Available
+              </button>
+            )}
+          </div>
 
-              bookId={book._id}
-              userName={userName}
-              userEmail={userEmail}
-              bookTitle={book.title}
-              image={book.image}
-            />
-          ) : (
-       <button
-  disabled
-  className="w-full h-12 rounded-xl bg-gray-200 text-gray-500 font-semibold cursor-not-allowed"
->
-  <BookOpen className="inline mr-2 h-5 w-5" />
-  Not Available
-</button>
-          )}
-        </div>
           </div>
         </article>
       </div>

@@ -1,16 +1,7 @@
 
 import Link from "next/link";
+import BookCard, { type Book } from "@/components/BookCard";
 import NewArrivalsAnimation from "./NewArrivalsAnimation";
-
-
-interface Book {
-  _id: string;
-  title: string;
-  author: string;
-  category: string;
-  image: string;
-  description: string;
-}
 
 const NewArrivalsPage = async () => {
   const res = await fetch("http://localhost:5000/new-arrivals", {
@@ -60,38 +51,7 @@ const NewArrivalsPage = async () => {
             <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
               {books.map((book) => (
                 <NewArrivalsAnimation key={book._id} type="card">
-                  <div className="h-full overflow-hidden rounded-2xl border border-[#E7E4D9] bg-[#FFFDF8] shadow-sm">
-                    {/* Book Image */}
-                    <div className="h-64 w-full overflow-hidden bg-[#f1efea]">
-                      <img
-                        src={book.image}
-                        alt={book.title}
-                        className="h-full w-full object-contain p-4 transition-transform duration-500 hover:scale-110"
-                      />
-                    </div>
-
-                    {/* Book Details */}
-                    <div className="p-5">
-                      <span className="rounded-full bg-[#879878]/15 px-3 py-1 text-xs font-semibold text-[#283D32]">
-                        {book.category}
-                      </span>
-
-                      <h3 className="mt-4 line-clamp-1 text-xl font-bold text-[#283D32]">
-                        {book.title}
-                      </h3>
-
-                      <p className="mt-2 text-sm text-[#68736A]">
-                        By {book.author}
-                      </p>
-
-                      <Link
-                        href={`/books/${book._id}`}
-                        className="mt-5 block w-full rounded-lg bg-[#283D32] px-4 py-3 text-center text-sm font-semibold text-white transition duration-300 hover:bg-[#879878]"
-                      >
-                        View Details
-                      </Link>
-                    </div>
-                  </div>
+                  <BookCard book={book} />
                 </NewArrivalsAnimation>
               ))}
             </div>
