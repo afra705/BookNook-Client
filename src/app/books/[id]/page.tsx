@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowLeft, BookOpen, User, Copy } from "lucide-react";
 import BorrowModal from "@/components/BorrowModal";
 
+
 interface Person {
   name?: string;
   email?: string;
@@ -30,14 +31,20 @@ interface BookDetailsProps {
   }>;
 }
 
-const getPersonName = (person: string | Person | undefined) => {
+const getPersonName = (person : string | Person | undefined) => {
   if (!person) return undefined;
   if (typeof person === "string") return person;
   return person.name || person.email;
 };
 
+const getPersonEmail = (person : string | Person | undefined)=>{
+    if(!person || typeof person === "string") return undefined;
+    return person.email;
+}
+
 const BookDetails = async ({ params }: BookDetailsProps) => {
-   // Get logged-in user session
+
+   
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -59,14 +66,20 @@ const BookDetails = async ({ params }: BookDetailsProps) => {
   if (!res.ok) {
     throw new Error("Failed to fetch book");
   }
+ 
 
   const book: Book = await res.json();
 
   const addedBy =
     getPersonName(book.addedBy) ??
     getPersonName(book.createdBy) ??
-    getPersonName(book.owner) ??
     "BookNook Library";
+
+const addedByEmail = 
+    getPersonEmail(book.addedBy)??
+    getPersonEmail(book.createdBy)??
+    'booknook@gmail.com'
+
 
   return (
     <section className="min-h-screen bg-[#F8F5ED] px-4 py-10 sm:px-6 lg:px-10">
@@ -121,18 +134,26 @@ const BookDetails = async ({ params }: BookDetailsProps) => {
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
               {/* Added By */}
 
-          <div className="flex items-center gap-3 rounded-2xl border border-[#E7E4D9] bg-[#F8F5ED] p-4">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#283D32] text-[#FFFDF8]">
-              <User size={20} />
-            </div>
+  {/* Added By */}
+<div className="flex items-center gap-3 rounded-2xl border border-[#E7E4D9] bg-[#F8F5ED] p-4">
+  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#283D32] text-[#FFFDF8]">
+    <User size={20} />
+  </div>
 
-            <div>
-              <p className="text-sm text-[#77786F]">Added By</p>
-              <p className="mt-1 font-semibold text-[#283D32]">
-                {addedBy}
-              </p>
-            </div>
-          </div>
+  <div className="min-w-0">
+    <p className="text-sm text-[#77786F]">Added By</p>
+
+    <p className="mt-1 font-semibold text-[#283D32]">
+      {addedBy}
+    </p>
+
+    {addedByEmail && (
+      <p className="mt-1 break-all text-xs text-[#68736A]">
+        {addedByEmail}
+      </p>
+    )}
+  </div>
+</div>
 
 
               {/* Total Copies */}
@@ -170,9 +191,12 @@ const BookDetails = async ({ params }: BookDetailsProps) => {
         <div className="mt-auto pt-8">
           {book.totalCopies > 0 ? (
             <BorrowModal
+
+              bookId={book._id}
               userName={userName}
               userEmail={userEmail}
               bookTitle={book.title}
+              image={book.image}
             />
           ) : (
        <button
