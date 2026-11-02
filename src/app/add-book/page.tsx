@@ -13,6 +13,7 @@ import {
   Plus,
   User,
 } from "lucide-react";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 const inputClass =
   "w-full rounded-xl border border-[#DADFD5] bg-white py-3 pl-11 pr-4 text-sm text-[#283D32] shadow-[0_1px_2px_rgba(40,61,50,0.04)] outline-none transition placeholder:text-[#9BA79E] hover:border-[#C6CFC1] focus:border-[#879878] focus:ring-4 focus:ring-[#879878]/15";
@@ -55,6 +56,7 @@ function SectionTitle({
 }
 
 const AddBookForm = () => {
+
   const { data: session, isPending } = authClient.useSession();
 
   const [imageUrl, setImageUrl] = useState("");
@@ -91,10 +93,14 @@ const AddBookForm = () => {
     try {
       setSubmitting(true);
 
-      const res = await fetch("http://localhost:5000/books", {
+     const token = await getTokenFromClient()
+      
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/books`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(bookData),
       });

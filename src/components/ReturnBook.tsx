@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 interface ReturnBookProps {
   id: string;
@@ -17,8 +18,12 @@ const ReturnBook = ({ id }: ReturnBookProps) => {
     setLoading(true);
 
     try {
-      const res = await fetch(`http://localhost:5000/borrow/${id}`, {
+      const token = await getTokenFromClient()
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/borrow/${id}`, {
         method: "DELETE",
+          headers: {
+      authorization: `Bearer ${token}`,
+    },
       });
 
       const data = await res.json();

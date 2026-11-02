@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import UpdatePage from "./Update";
 import DeletePage from "./Delete";
+import { getTokenFromServer } from "@/lib/getTokenFromServer";
 
 interface Book {
   _id: string;
@@ -23,11 +24,16 @@ const MyBooksPage = async () => {
     redirect("/login");
   }
 
+  const token = await getTokenFromServer();
   const res = await fetch(
-    `http://localhost:5000/my-books/${session.user.email}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/my-books/${session.user.email}`,
     {
       cache: "no-store",
+      headers:{
+            authorization: `Bearer ${token}`,
+          }
     },
+    
   );
 
   if (!res.ok) {

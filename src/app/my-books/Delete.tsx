@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 interface DeletePageProps {
   bookId: string;
@@ -26,11 +27,15 @@ const DeletePage = ({ bookId }: DeletePageProps) => {
     setLoading(true);
 
     try {
+      const token = await getTokenFromClient();
       const response = await fetch(
-        `http://localhost:5000/books/${bookId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/books/${bookId}`,
         {
           method: "DELETE",
-        }
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        },
       );
 
       if (!response.ok) {
@@ -52,11 +57,9 @@ const DeletePage = ({ bookId }: DeletePageProps) => {
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger  className="flex flex-1 items-center justify-center gap-2 rounded-md bg-[#C8795B] px-3 py-2 text-xs font-semibold text-white transition hover:bg-[#b9684a">
-    
-          <Trash2 size={14} />
-          Delete
-    
+      <AlertDialogTrigger className="flex flex-1 items-center justify-center gap-2 rounded-md bg-[#C8795B] px-3 py-2 text-xs font-semibold text-white transition hover:bg-[#b9684a">
+        <Trash2 size={14} />
+        Delete
       </AlertDialogTrigger>
 
       <AlertDialogContent>
@@ -64,15 +67,13 @@ const DeletePage = ({ bookId }: DeletePageProps) => {
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
 
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete this
-            book from your collection.
+            This action cannot be undone. This will permanently delete this book
+            from your collection.
           </AlertDialogDescription>
         </AlertDialogHeader>
 
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={loading}>
-            Cancel
-          </AlertDialogCancel>
+          <AlertDialogCancel disabled={loading}>Cancel</AlertDialogCancel>
 
           <AlertDialogAction
             onClick={(e) => {

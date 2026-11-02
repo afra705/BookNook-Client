@@ -27,7 +27,7 @@ const Navbar = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
 
-  // Close the profile dropdown on outside click or Escape.
+
   useEffect(() => {
     if (!isProfileOpen) return;
 

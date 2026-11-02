@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, BookOpen, User, Copy } from "lucide-react";
 import BorrowModal from "@/components/BorrowModal";
+import { getTokenFromServer } from "@/lib/getTokenFromServer";
 
 
 interface Person {
@@ -43,8 +44,10 @@ const getPersonEmail = (person : string | Person | undefined)=>{
 }
 
 const BookDetails = async ({ params }: BookDetailsProps) => {
+  // TOKEN
+  
+  const token = await getTokenFromServer()
 
-   
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -59,8 +62,11 @@ const BookDetails = async ({ params }: BookDetailsProps) => {
 
   const { id } = await params;
 
-  const res = await fetch(`http://localhost:5000/books/${id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/books/${id}`, {
     cache: "no-store",
+    headers:{
+      authorization: `Bearer ${token}`,
+    }
   });
 
   if (!res.ok) {
@@ -73,7 +79,11 @@ const BookDetails = async ({ params }: BookDetailsProps) => {
   // if user already exists
   const borrowRes = await fetch(
   `http://localhost:5000/my-borrows/${(userEmail)}`,
-  { cache: "no-store" }
+  { cache: "no-store",
+      headers: {
+      Authorization: `Bearer ${token}`,
+    },
+   }
   );
   const borroWBooks = await borrowRes.json();
   

@@ -168,7 +168,7 @@ const Footer = () => {
         {/* Bottom bar */}
         <div className="relative flex flex-col items-center justify-between gap-4 border-t border-[#F8F5ED]/10 py-6 sm:flex-row">
           <p className="text-xs text-[#879878]">
-            © {new Date().getFullYear()} BookNook. Made for readers.
+            © 2026 BookNook. Made for readers.
           </p>
 
           <div className="flex items-center gap-5">

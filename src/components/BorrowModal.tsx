@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { BookOpen, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 
 interface BorrowModalProps {
@@ -43,10 +44,12 @@ export default function BorrowModal({
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/borrow", {
+      const token = await getTokenFromClient()
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/borrow`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           bookId,

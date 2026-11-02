@@ -7,7 +7,7 @@ import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import {
-  BookOpen,
+
   Mail,
   Lock,
   Eye,
@@ -27,7 +27,21 @@ function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+//google sign in 
+const handleGoogleSignIn = async () => {
+  try {
+    const { error } = await authClient.signIn.social({
+      provider: "google",
+      callbackURL: callbackURL,
+    });
 
+    if (error) {
+      toast.error(error.message || "Google login failed");
+    }
+  } catch {
+    toast.error("Something went wrong with Google login");
+  }
+};
   // Email and Password Login
   const handleSignIn = async (
     e: React.SubmitEvent<HTMLFormElement>
@@ -191,7 +205,7 @@ function SignInForm() {
         {/* Google Login */}
         <button
           type="button"
-  
+          onClick={handleGoogleSignIn}
           disabled={loading || googleLoading}
           className="flex w-full items-center justify-center gap-3 rounded-lg border border-[#879878]/40 bg-white py-3 font-medium text-[#292D2A] transition hover:bg-[#F8F5ED] disabled:cursor-not-allowed disabled:opacity-60"
         >

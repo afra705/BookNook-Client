@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import {
@@ -20,6 +20,8 @@ import {
 const SignUpPage = () => {
   const router = useRouter();
 
+  const searchParams = useSearchParams();
+  const callbackURL = searchParams.get("callbackURL") || "/";
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -29,6 +31,21 @@ const SignUpPage = () => {
   const hasLowercase = /[a-z]/.test(password);
   const hasMinLength = password.length >= 6;
 
+  //google sign in 
+const handleGoogleSignIn = async () => {
+  try {
+    const { error } = await authClient.signIn.social({
+      provider: "google",
+      callbackURL: callbackURL,
+    });
+
+    if (error) {
+      toast.error(error.message || "Google login failed");
+    }
+  } catch {
+    toast.error("Something went wrong with Google login");
+  }
+};
   const isPasswordValid =
     hasUppercase && hasLowercase && hasMinLength;
 
@@ -284,7 +301,7 @@ const SignUpPage = () => {
           {/* Google */}
           <button
             type="button"
-   
+            onClick={handleGoogleSignIn}
             disabled={googleLoading}
             className="w-full flex items-center justify-center gap-3 rounded-xl border border-[#879878]/30 py-3 font-semibold text-[#292D2A] hover:bg-[#F8F5ED] transition disabled:opacity-50"
           >

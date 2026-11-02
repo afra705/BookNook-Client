@@ -14,10 +14,7 @@ interface BookCardProps {
   book: Book;
 }
 
-/**
- * Shared catalogue card used by the home page and the books listing.
- * The whole card is the link, so there is no nested interactive content.
- */
+
 export default function BookCard({ book }: BookCardProps) {
   return (
     <Link

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { BookOpen, Calendar } from "lucide-react";
 import ReturnBook from "@/components/ReturnBook";
+import { getTokenFromServer } from "@/lib/getTokenFromServer";
 
 interface BorrowedBook {
   _id: string;
@@ -27,9 +28,15 @@ const BorrowPage = async () => {
     redirect("/login");
   }
 
+  const token = await getTokenFromServer()
   const res = await fetch(
-    `http://localhost:5000/my-borrows/${(session.user.email)}`,
-    { cache: "no-store" }
+    `${process.env.NEXT_PUBLIC_API_URL}/my-borrows/${(session.user.email)}`,
+    { cache: "no-store",
+       headers:{
+      authorization: `Bearer ${token}`,
+    }
+     },
+    
   );
 
   if (!res.ok) {

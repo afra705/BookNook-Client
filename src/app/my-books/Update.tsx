@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 interface Book {
   _id: string;
@@ -43,11 +44,13 @@ export default function UpdatePage({book}:IB) {
   const data = Object.fromEntries(formData.entries());
   console.log(data);
   
-
-  const res = await fetch(`http://localhost:5000/books/${book._id}`, {
+  const token = await getTokenFromClient()
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/books/${book._id}`, {
     method: "PATCH",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json", 
+      authorization: `Bearer ${token}`,
+
     },
     body: JSON.stringify(data),
   });
