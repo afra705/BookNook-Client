@@ -239,16 +239,26 @@ const handleGoogleSignIn = async () => {
           {googleLoading ? "Connecting..." : "Continue with Google"}
         </button>
 
-        {/* Register Link */}
-        <p className="mt-7 text-center text-sm text-[#292D2A]">
-          Don&apos;t have an account?{" "}
-          <Link
-            href="/sign-up"
-            className="font-bold text-[#C8795B] hover:underline"
-          >
-            Register Now
-          </Link>
-        </p>
+      {/* Forgot Password Button */}
+<div className="mt-5 text-center">
+  <button
+    type="button"
+    className="text-sm font-medium text-[#C8795B] transition hover:text-[#283D32] hover:underline"
+  >
+    Forgot Password?
+  </button>
+</div>
+
+{/* Register Link */}
+<p className="mt-7 text-center text-sm text-[#292D2A]">
+  Don&apos;t have an account?{" "}
+  <Link
+    href="/sign-up"
+    className="font-bold text-[#C8795B] hover:underline"
+  >
+    Register Now
+  </Link>
+</p>
 
         {/* Back to Home */}
         <div className="mt-5 text-center">
