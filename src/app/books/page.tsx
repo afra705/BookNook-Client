@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import BookCard, { type Book } from "@/components/BookCard";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "All Books",
+};
 interface BooksPageProps {
   searchParams: Promise<{
     category?: string | string[];
@@ -32,6 +36,7 @@ const BooksPage = async ({ searchParams }: BooksPageProps) => {
           selectedCategory.toLowerCase()
       )
     : books;
+
 
   return (
     <section className="min-h-screen bg-[#F8F5ED] px-4 py-12">

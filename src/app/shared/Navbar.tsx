@@ -22,7 +22,7 @@ const Navbar = () => {
   const router = useRouter();
 
   const { data: session, isPending } = authClient.useSession();
-
+ 
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -53,13 +53,7 @@ const Navbar = () => {
     };
   }, [isProfileOpen]);
 
-  const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "All Books", href: "/books" },
-    { name: "Add Book", href: "/add-book" },
-    { name: "My Books", href: "/my-books" },
-    { name: "My Borrows", href: "/my-borrows" },
-  ];
+
 
   const handleSignOut = async () => {
     await authClient.signOut({
@@ -79,7 +73,18 @@ const Navbar = () => {
   };
 
   const user = session?.user;
+ const navLinks = [
+  { name: "Home", href: "/" },
+  { name: "All Books", href: "/books" },
 
+  ...(user
+    ? [
+        { name: "Add Book", href: "/add-book" },
+        { name: "My Books", href: "/my-books" },
+        { name: "My Borrows", href: "/my-borrows" },
+      ]
+    : []),
+];
   return (
     <nav className="sticky top-0 z-50 border-b border-[#E5E0D5] bg-[#F8F5ED]">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">

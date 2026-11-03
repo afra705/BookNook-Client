@@ -4,7 +4,11 @@ import { redirect } from "next/navigation";
 import UpdatePage from "./Update";
 import DeletePage from "./Delete";
 import { getTokenFromServer } from "@/lib/getTokenFromServer";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "My Books",
+};
 interface Book {
   _id: string;
   title: string;

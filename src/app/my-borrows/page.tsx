@@ -6,7 +6,11 @@ import Link from "next/link";
 import { BookOpen, Calendar } from "lucide-react";
 import ReturnBook from "@/components/ReturnBook";
 import { getTokenFromServer } from "@/lib/getTokenFromServer";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "My Borrows",
+};
 interface BorrowedBook {
   _id: string;
   bookId: string;
