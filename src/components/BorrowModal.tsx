@@ -45,6 +45,7 @@ export default function BorrowModal({
 
     try {
       const token = await getTokenFromClient()
+      
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/borrow`, {
         method: "POST",
         headers: {

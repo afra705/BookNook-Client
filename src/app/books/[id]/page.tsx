@@ -77,15 +77,21 @@ const BookDetails = async ({ params }: BookDetailsProps) => {
   const book: Book = await res.json();
 
   // if user already exists
-  const borrowRes = await fetch(
-  `http://localhost:5000/my-borrows/${(userEmail)}`,
-  { cache: "no-store",
-      headers: {
+const borrowRes = await fetch(
+  `${process.env.NEXT_PUBLIC_API_URL}/my-borrows/${encodeURIComponent(userEmail)}`,
+  {
+    cache: "no-store",
+    headers: {
       Authorization: `Bearer ${token}`,
     },
-   }
-  );
-  const borroWBooks = await borrowRes.json();
+  }
+);
+
+if (!borrowRes.ok) {
+  throw new Error("Failed to fetch borrowed books");
+}
+
+const borroWBooks = await borrowRes.json();
   
 const alreadyBorrowed = borroWBooks.some(
   (borrow: { bookId: string }) => borrow.bookId === book._id

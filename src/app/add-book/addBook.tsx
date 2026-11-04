@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 const AddBookForm = () => {
   const { data: session, isPending } = authClient.useSession();
@@ -35,17 +36,19 @@ const AddBookForm = () => {
           email: session.user.email,
         },
       };
+     
+   const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "");
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/books`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(bookData),
-        }
-      );
+const token = await getTokenFromClient();
+
+const res = await fetch(`${API_URL}/books`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+  body: JSON.stringify(bookData),
+});
 
       if (!res.ok) {
         throw new Error("Failed to add book");

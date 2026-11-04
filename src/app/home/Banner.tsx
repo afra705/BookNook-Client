@@ -224,18 +224,7 @@ export default function Banner() {
                         />
                       </Link>
 
-                      <Link
-                        href="/add-book"
-                        className="group inline-flex items-center gap-2 text-sm font-semibold text-[#E1E5D9]"
-                      >
-                        <span className="border-b border-[#DCE3D0]/30 pb-1 transition-colors duration-300 group-hover:border-[#C8795B] group-hover:text-[#FFFDF8]">
-                          Add a book to the shelf
-                        </span>
-                        <ArrowUpRight
-                          size={16}
-                          className="text-[#C8795B] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                        />
-                      </Link>
+                
                     </motion.div>
 
                     {/* Shelf note */}

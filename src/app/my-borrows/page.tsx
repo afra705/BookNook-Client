@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { BookOpen, Calendar } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import ReturnBook from "@/components/ReturnBook";
 import { getTokenFromServer } from "@/lib/getTokenFromServer";
 import type { Metadata } from "next";
@@ -34,7 +34,7 @@ const BorrowPage = async () => {
 
   const token = await getTokenFromServer()
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/my-borrows/${(session.user.email)}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/my-borrows/${encodeURIComponent(session.user.email)}`,
     { cache: "no-store",
        headers:{
       authorization: `Bearer ${token}`,
